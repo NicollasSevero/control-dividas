@@ -1,0 +1,209 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0a0a0a;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    padding: 15px;
+}
+
+input[type="mes"] {
+    background: black;
+    color: #9b00ff; /* Cor do texto */
+    border: 1px solid #9b00ff;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+/* Estiliza o ícone do calendário */
+input[type="mes"]::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* Deixa o ícone branco */
+    cursor: pointer;
+}
+
+/* Estiliza o fundo da seleção (funciona no Chrome e Edge) */
+input[type="mes"]::-webkit-datetime-edit {
+    color: #9b00ff; /* Cor do texto dentro do campo */
+}
+
+
+h1 {
+    color: #9b00ff;
+    text-shadow: 0 0 10px #9b00ff, 0 0 20px #6d00b9;
+    padding: 15px;
+}
+
+form {
+    background: rgba(20, 20, 20, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #9b00ff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 90%;
+    margin: auto;
+}
+
+input, select {
+    background: black;
+    color: #9b00ff;
+    border: 1px solid #9b00ff;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button {
+    background-color: #9b00ff;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background-color: #c100ff;
+    box-shadow: 0 0 10px #c100ff;
+}
+
+#saldo {
+    font-size: 1.5em;
+    text-shadow: 0 0 10px #0ff;
+    margin-bottom: 15px;
+}
+
+#resumo {
+    padding: 30px;
+    margin-bottom: 15px;
+}
+
+#saldo.negative {
+    color: red;
+}
+
+.tabela-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+table { 
+    margin: auto;
+    border-collapse: collapse;
+    background: rgba(20, 20, 20, 0.9);
+    box-shadow: 0 0 10px #9b00ff;
+    table-layout: fixed; 
+    width: 90%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    min-width: 100px;
+    border: 1px solid #9b00ff;
+    padding: 12px;
+    text-align: center;
+    word-wrap: break-word;
+    font-size: 1.1em;
+}
+
+th {
+    background: #9b00ff;
+    color: black;
+}
+
+.remover {
+    background-color: #9b00ff;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.remover:hover {
+    background-color: #c100ff;
+    box-shadow: 0 0 10px #c100ff;
+}
+
+.checkbox-pago {
+    transform: scale(1.3);
+    accent-color: #0ff;
+}
+
+ul {
+    padding: 30px;
+    text-decoration: none;
+    line-height: 1.5em;
+}
+
+li {
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid #9b00ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    box-shadow: 0 0 10px #9b00ff;
+    font-size: 1.2em;
+    list-style: none;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: auto;
+}
+
+li span {
+    text-align: center;
+    flex: 1;
+    padding: 0 10px;
+    white-space: nowrap;
+}
+
+li .data {
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+li .tipo {
+    color: #ff00ff;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+li .descricao {
+    color: #ffff00;
+    text-shadow: 0 0 5px #ffff00;
+}
+
+li .valor {
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+li .remover {
+    margin-left: 10px;
+}
+
+li .checkbox-pago {
+    margin-left: 5px;
+}

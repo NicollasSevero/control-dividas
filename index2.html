@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Finanças</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Controle Finanças</h1>
+    </header>
+    <section id="financas">
+        <div id="resumo">
+            <p>Saldo Atual: <span id="saldo">R$ 0,00</span></p>
+        </div>
+        <form id="formTransacao">
+            <label for="mes" ></label>Mês:</label>
+            <input type="month" id="mes" required>
+            
+            <label for="tipo">Tipo de Dívida:</label>
+            <select id="tipo">
+                <option>Água</option>
+                <option>Luz</option>
+                <option>Cartão de Crédito</option>
+                <option>Empréstimo</option>
+                <option>Gasolina</option>
+                <option>Outros</option>
+                <option>Dízimo</option>
+                <option>Internet</option>
+            </select>
+            
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" placeholder="Ex: Água, Luz, Empréstimo" required>
+            
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" placeholder="R$ 0,00" required>
+            
+            <label for="pago">Pago:</label>
+            <input type="checkbox" id="pago">
+            
+            <button type="submit">Adicionar</button>
+        </form>
+        <ul id="listaTransacoes"></ul>
+    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("formTransacao");
+            const listaTransacoes = document.getElementById("listaTransacoes");
+            const saldoElemento = document.getElementById("saldo");
+            let saldo = 0;
+            let transacoes = [];
+
+            function salvarDados() {
+                localStorage.setItem("transacoes", JSON.stringify(transacoes));
+                localStorage.setItem("saldo", saldo);
+            }
+
+            function carregarDados() {
+                const transacoesSalvas = JSON.parse(localStorage.getItem("transacoes")) || [];
+                saldo = parseFloat(localStorage.getItem("saldo")) || 0;
+                transacoes = transacoesSalvas;
+                atualizarLista();
+                atualizarSaldo();
+            }
+
+            function atualizarLista() {
+                listaTransacoes.innerHTML = "";
+                transacoes.forEach((transacao, index) => {
+                    adicionarTransacaoNaLista(transacao, index);
+                });
+            }
+
+            function adicionarTransacaoNaLista(transacao, index) {
+                const row = document.createElement("li");
+                row.innerHTML = `
+                    <span class="data">${transacao.mes}</span>
+                    <span class="tipo">${transacao.tipo}</span>
+                    <span class="descricao">${transacao.descricao}</span>
+                    <span class="valor">R$ ${transacao.valor.toFixed(2)}</span>
+                    <input type="checkbox" class="checkbox-pago" data-index="${index}" ${transacao.pago ? "checked" : ""}>
+                    <button class="remover" data-index="${index}">X</button>
+                `;
+                listaTransacoes.appendChild(row);
+            }
+
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const mes = document.getElementById("mes").value;
+                const tipo = document.getElementById("tipo").value;
+                const descricao = document.getElementById("descricao").value;
+                const valor = parseFloat(document.getElementById("valor").value.replace(",", "."));
+                const pago = document.getElementById("pago").checked;
+
+                if (!mes || !descricao || isNaN(valor)) {
+                    alert("Preencha todos os campos corretamente!");
+                    return;
+                }
+
+                const transacao = { mes, tipo, descricao, valor, pago };
+                transacoes.push(transacao);
+
+                if (!pago) {
+                    saldo -= valor;
+                }
+
+                salvarDados();
+                atualizarLista();
+                atualizarSaldo();
+                form.reset();
+            });
+
+            listaTransacoes.addEventListener("click", (event) => {
+                if (event.target.classList.contains("remover")) {
+                    const index = event.target.dataset.index;
+                    const transacao = transacoes[index];
+
+                    if (!transacao.pago) {
+                        saldo += transacao.valor;
+                    }
+
+                    transacoes.splice(index, 1);
+                    salvarDados();
+                    atualizarLista();
+                    atualizarSaldo();
+                }
+
+                if (event.target.classList.contains("checkbox-pago")) {
+                    const index = event.target.dataset.index;
+                    transacoes[index].pago = event.target.checked;
+
+                    if (event.target.checked) {
+                        saldo += transacoes[index].valor;
+                    } else {
+                        saldo -= transacoes[index].valor;
+                    }
+
+                    salvarDados();
+                    atualizarSaldo();
+                }
+            });
+
+            function atualizarSaldo() {
+                saldoElemento.textContent = `R$ ${saldo.toFixed(2)}`;
+                saldoElemento.style.color = saldo < 0 ? "red" : "cyan";
+            }
+
+            carregarDados();
+        });
+    </script>
+</body>
+</html>
